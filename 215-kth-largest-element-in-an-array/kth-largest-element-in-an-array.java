@@ -1,22 +1,47 @@
 class Solution {
     public int findKthLargest(int[] nums, int k) {
-        int min = Integer.MAX_VALUE;
-        int max = Integer.MIN_VALUE;
-        for (int num : nums) {
-            if (num < min) min = num;
-            if (num > max) max = num;
+       int size=nums.length;
+       int temp;
+        //Heapifying the array in place
+       for(int i=size/2-1;i>=0;i--){
+        heap(nums,size,i);
+       }
+        // pop max element k times
+       while(k>0){
+        //swap max element at top with last element
+        temp=nums[size-1];
+        nums[size-1]=nums[0];
+        nums[0]=temp;
+        //reduce size and maintain heap property
+        heap(nums,--size,0);
+
+        k--;
+       }
+       return nums[size];
+    }
+        // heap down //max heap
+    public static void heap(int[] nums,int size,int parent){
+        int temp,left,right,largest;
+        while(true){
+            //child nodes
+        left=2*parent+1;
+        right=2*parent+2;
+        largest=parent;
+        //swap parent with greater child
+        if(left<size && nums[left]>nums[parent]){
+            largest=left;
         }
-        int[] count = new int[max-min+1];
-        for (int num : nums) {
-            count[num -min   ]++;
+        if(right<size && nums[right]>nums[largest]){
+            largest=right;
         }
-        for (int i = max-min; i >= 0; i--) {
-            k -= count[i];
-            if (k <= 0) {
-                return i + min;
-            }
+        //break if parent is greatest
+        if(largest==parent){break;}
+
+        temp=nums[largest];
+        nums[largest]=nums[parent];
+        nums[parent]=temp;
+        //recheck heap property for element that is pushed down from top(parent to child)
+        parent=largest;
         }
-        
-        return -1;
     }
 }
