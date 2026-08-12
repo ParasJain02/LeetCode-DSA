@@ -6,8 +6,8 @@ class Solution {
         if(num==0){
             return (sum/10==0)?sum:addDigits(sum,0);
         }
-        int digit=num%10;
-        sum+=digit;
+        
+        sum+=num%10;
         return addDigits(num/10,sum);
         
     }
