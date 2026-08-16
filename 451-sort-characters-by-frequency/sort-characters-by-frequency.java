@@ -4,20 +4,26 @@ class Solution {
         for(int i=0;i<s.length();i++){
             freq[s.charAt(i)]++;
         }
-        PriorityQueue<Character> maxHeap=new PriorityQueue<>((a,b)->freq[b]-freq[a]);
+
+        List<Character>[] bucket=new List[s.length()+1];
         for(int i=0;i<128;i++){
             if(freq[i]>0){
-
-            maxHeap.offer((char)(i));
+                int f=freq[i];
+                if(bucket[f]==null){
+                    bucket[f]=new ArrayList<>();
+                }
+                bucket[f].add((char) i);
             }
         }
-        char c;
-        StringBuilder sb=new StringBuilder();
-        while(!(maxHeap.isEmpty())){
-            c=maxHeap.poll();
-            for(int i=0;i<freq[c];i++){
 
-            sb.append(c);
+        StringBuilder sb = new StringBuilder();
+        for (int f = bucket.length - 1; f > 0; f--) {
+            if (bucket[f] != null) {
+                for (char c : bucket[f]) {
+                    for (int i = 0; i < f; i++) {
+                        sb.append(c);
+                    }
+                }
             }
         }
         return sb.toString();
