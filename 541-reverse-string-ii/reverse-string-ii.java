@@ -5,11 +5,8 @@ class Solution {
 
         int i=0;
         while(i<n){
-            if(i+k-1<n){
-                reverse(c,i,i+k-1);
-            }else{
-                reverse(c,i,n-1);
-            }
+                reverse(c,i,Math.min(i+k-1,n-1));
+            
             i+=2*k;
         }
         return new String(c,0,n);
