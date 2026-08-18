@@ -1,28 +1,38 @@
 class Solution {
     public String decodeString(String s) {
-        Deque<Integer> no=new ArrayDeque<>();
-        Deque<StringBuilder> str=new ArrayDeque<>();
+        return decode(s);
+    }
+    //Global integer i
+    int i=0;
+
+
+    private String decode(String s){
+
         StringBuilder cur=new StringBuilder();
-        int n=s.length();
         int num=0;
-        for(char c:s.toCharArray()){
-            if(Character.isDigit(c)){
-                num=num*10+c-'0';
-            }else if(c=='['){
-                no.push(num);
-                num=0;
-                str.push(cur);
-                cur=new StringBuilder();
-            }else if(c==']'){
-                int k=no.pop();
-                StringBuilder prev=str.pop();
-                for(int i=0;i<k;i++){
-                    prev.append(cur);
-                }
-                cur=prev;
-            }else{
-                cur.append(c);
+
+        while(i<s.length() && s.charAt(i)!=']'){
+            //Caculate multi digit no
+            if(Character.isDigit(s.charAt(i))){
+                num=num*10+s.charAt(i)-'0';
             }
+            //Inner String
+            else if(s.charAt(i)=='['){
+                i++;//skip'['
+                String inner=decode(s);
+                //Append num times
+                for(int j=0;j<num;j++){
+                    cur.append(inner);
+                }
+                //reset num
+                num=0;
+            }
+            
+            else{
+                cur.append(s.charAt(i));
+            }
+            //increment i
+             i++;              
         }
         return cur.toString();
     }
