@@ -4,20 +4,19 @@ class Solution {
         Deque<Character> chrStack =new ArrayDeque();
         StringBuilder ans =new StringBuilder();
 
-        char c;int k,i=0;
+        char c;int k,i=0,x=0;
 
         while(i<s.length()){
-            c=s.charAt(i);
-            if(Character.isDigit(c)){
-                noStack.push(c-48);
-                i++;
+            if(Character.isDigit(s.charAt(i))){
                 while(Character.isDigit(s.charAt(i))){
-                    noStack.push(noStack.pop()*10+s.charAt(i)-48);
+                    x=x*10+s.charAt(i)-48;
                     i++;
                 }
+                    noStack.push(x);
+                    x=0;
                 continue;
-            }else if(c==']'){
-        StringBuilder temp =new StringBuilder();
+            }else if(s.charAt(i)==']'){
+                StringBuilder temp =new StringBuilder();
                 while(chrStack.peek()!='['){
                     temp.append(chrStack.pop());
                 }
@@ -32,7 +31,7 @@ class Solution {
                 }
                 
             }else{
-                chrStack.push(c);
+                chrStack.push(s.charAt(i));
             }
             i++;
         }
