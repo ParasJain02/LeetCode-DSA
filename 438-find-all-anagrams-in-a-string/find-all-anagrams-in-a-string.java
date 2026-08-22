@@ -5,35 +5,31 @@ class Solution {
 
         if(m>n){return new ArrayList<>();}
 
-        Map<Character,Integer> pMap=new HashMap<>();
+        int[] freq= new int[26];
         for(char c:p.toCharArray()){
-            pMap.put(c,pMap.getOrDefault(c,0)+1);
+            freq[c-'a']++;
         }
 
 
-        int i=0,j=-1;
+        int left=0,count=m;
         List<Integer> ans=new ArrayList<>();
 
-        while(i<n-m+1){
-            while(j<n-1 && j-i+1<m){
-                j++;
-                pMap.put(s.charAt(j),pMap.getOrDefault(s.charAt(j),0)-1);
-                if(pMap.get(s.charAt(j))==0){
-                    pMap.remove(s.charAt(j));
+        for(int right=0; right<n; right++){
+            if(freq[s.charAt(right)-'a']>0){
+                count--;
+            }
+            freq[s.charAt(right)-'a']--;
+
+            if(right-left+1==m){
+                if(count==0){
+                    ans.add(left);
                 }
+                freq[s.charAt(left)-'a']++;
+                if(freq[s.charAt(left)-'a']>0){
+                    count++;
+                }
+                left++;
             }
-
-            if(pMap.isEmpty()){
-                ans.add(i);                
-            }
-            
-            pMap.put(s.charAt(i),pMap.getOrDefault(s.charAt(i),0)+1);
-            if(pMap.get(s.charAt(i))==0){
-                pMap.remove(s.charAt(i));
-            }
-            i++;
-            
-
         }
         return ans;
     }
